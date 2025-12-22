@@ -2,7 +2,8 @@
 // API CLIENT HOÀN CHỈNH
 // ========================
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "https://sachcu.up.railway.app/api";
+
 
 // ===== TOKEN =====
 function getAuthToken() {
