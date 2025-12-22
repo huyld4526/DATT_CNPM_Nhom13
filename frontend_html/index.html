@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sách Cũ Theo Khu Vực - Trang chủ</title>
+    <link rel="icon" href="assets/images/logo.png" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+          <img src="assets/images/logo.png" alt="Logo" class="me-2" style="height: 40px" />
+          Sách Cũ Theo Khu Vực
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html"> <i class="bi bi-house-door me-1"></i>Trang chủ </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="search-books.html"> <i class="bi bi-search me-1"></i>Tìm sách </a>
+            </li>
+
+            <ul class="navbar-nav" id="authLinks"></ul>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner py-5">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h1 class="fw-bold">Khám phá và chia sẻ sách cũ quanh bạn</h1>
+            <p class="lead">Góp phần lan tỏa tri thức, giữ gìn ký ức — mỗi quyển sách đều có câu chuyện riêng.</p>
+
+            <div class="d-flex gap-3 flex-wrap mt-3">
+              <a href="search-books.html" class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-search me-2"></i>Tìm sách ngay
+              </a>
+
+              <button id="btnPostBook" class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-pencil-square me-2"></i>Đăng bán sách
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED BOOKS -->
+    <section class="container my-5 py-4">
+      <h2 class="section-title mb-4">📚 Sách mới</h2>
+
+      <div id="featuredBooks" class="row g-4"></div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-center mt-4">
+        <nav>
+          <ul id="pagination" class="pagination"></ul>
+        </nav>
+      </div>
+    </section>
+
+    <!-- SEARCH PROMPT -->
+    <section class="bg-white py-5">
+      <div class="container text-center">
+        <h2 class="section-title">🔍 Tìm kiếm sách quanh bạn</h2>
+        <p class="lead mb-4">Hàng ngàn đầu sách đang chờ bạn khám phá từ những người yêu sách khác.</p>
+        <a href="search-books.html" class="btn btn-primary btn-lg px-4">
+          <i class="bi bi-search me-2"></i>Bắt đầu tìm kiếm
+        </a>
+      </div>
+    </section>
+
+    <!-- STATS SECTION -->
+    <section class="container my-5 py-4">
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <div class="p-4 shadow-sm rounded-4 bg-light">
+            <i class="bi bi-book-fill stats-icon mb-2"></i>
+            <h3 class="stats-number fw-bold">1000+</h3>
+            <p class="text-muted">Đầu sách</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="p-4 shadow-sm rounded-4 bg-light">
+            <i class="bi bi-people-fill stats-icon mb-2"></i>
+            <h3 class="stats-number fw-bold">500+</h3>
+            <p class="text-muted">Người dùng</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+          <div class="p-4 shadow-sm rounded-4 bg-light">
+            <i class="bi bi-geo-alt-fill stats-icon mb-2"></i>
+            <h3 class="stats-number fw-bold">63</h3>
+            <p class="text-muted">Tỉnh thành</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white py-3">
+      <div class="container text-center">
+        <p class="mb-0">
+          © 2025 - Nhóm 13 | Sách Cũ Theo Khu Vực
+          <span class="ms-2"><i class="bi bi-heart-fill text-danger"></i> Made with love</span>
+        </p>
+      </div>
+    </footer>
+
+    <!-- LOGIN REQUIRED MODAL -->
+    <div class="modal fade" id="loginRequiredModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cần đăng nhập</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">Bạn cần đăng nhập để đăng bán sách. Vui lòng đăng nhập để tiếp tục.</div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <a href="login.html" class="btn btn-primary"> <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/location-utils.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/home.js"></script>
+  </body>
+</html>

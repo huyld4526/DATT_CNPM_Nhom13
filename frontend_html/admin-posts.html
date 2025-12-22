@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản Lý Bài Đăng | Admin</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styleadmin.css" />
+  
+  <style>
+    .book-thumb { width: 50px; height: 70px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
+    .table-vertical-middle td { vertical-align: middle; }
+    .input-group:focus-within .input-group-text, .input-group:focus-within .form-control { border-color: #e67e22; box-shadow: none; }
+    
+    /* Style cho nút đang active */
+    .btn-group .btn.active { background-color: #0d6efd; color: white; font-weight: bold; }
+    .btn-group .btn-outline-warning.active { background-color: #ffc107; color: black; }
+    .btn-group .btn-outline-success.active { background-color: #198754; color: white; }
+    .btn-group .btn-outline-danger.active { background-color: #dc3545; color: white; }
+    .btn-group .btn-outline-secondary.active { background-color: #6c757d; color: white; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo-area">
+      <img src="assets/images/logo.png" alt="Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span>ADMIN PANEL</span>
+    </div>
+    <nav>
+      <a href="admin-dashboard.html" class="nav-link"> <i class="bi bi-grid-fill"></i> Tổng quan </a>
+      <a href="admin-users.html" class="nav-link"> <i class="bi bi-people-fill"></i> Quản lý người dùng </a>
+      <a href="#" class="nav-link active"> <i class="bi bi-file-earmark-text-fill"></i> Duyệt bài đăng </a>
+      <a href="admin-categories.html" class="nav-link"> <i class="bi bi-tags-fill"></i> Quản lý thể loại </a>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <div class="top-header mb-4">
+      <div class="header-title">Quản trị - <span class="text-black fw-bold">Duyệt bài đăng</span></div>
+      <div class="d-flex gap-3 align-items-center">
+        <span id="welcomeName" class="d-none d-md-block text-secondary small fw-bold">Xin chào, Admin</span>
+        <button id="logoutBtn" class="btn btn-sm btn-outline-danger"><i class="bi bi-box-arrow-right"></i> Đăng xuất</button>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-4">
+        <div class="row g-3 align-items-center justify-content-between">
+          
+          <div class="col-md-3">
+            <h5 class="mb-0 fw-bold text-dark">Danh sách bài đăng</h5>
+            <small class="text-muted" id="totalPostsCount">Đang tải...</small>
+          </div>
+
+          <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 pe-2 text-secondary"><i class="bi bi-search"></i></span>
+                <input type="text" id="searchInput" class="form-control border-start-0 ps-0 shadow-none text-secondary" placeholder="Tìm theo tên sách..." oninput="searchPosts()">
+            </div>
+          </div>
+
+          <div class="col-md-5 text-md-end">
+            <div class="btn-group shadow-sm" role="group">
+              <button type="button" class="btn btn-outline-primary active" onclick="filterPosts(this, 'ALL')">Tất cả</button>
+              <button type="button" class="btn btn-outline-warning" onclick="filterPosts(this, 'PENDING')">Chờ duyệt</button>
+              <button type="button" class="btn btn-outline-success" onclick="filterPosts(this, 'APPROVED')">Đã duyệt</button>
+              <button type="button" class="btn btn-outline-danger" onclick="filterPosts(this, 'DECLINED')">Đã từ chối</button>
+              <button type="button" class="btn btn-outline-secondary" onclick="filterPosts(this, 'SOLD')">Đã bán</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0 table-vertical-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col" class="ps-4" style="width: 5%">ID</th>
+                <th scope="col" style="width: 10%">Hình ảnh</th>
+                <th scope="col" style="width: 35%">Tên sách</th>
+                <th scope="col" style="width: 15%">Giá bán</th>
+                <th scope="col" style="width: 12%">Ngày đăng</th>
+                <th scope="col" style="width: 13%">Trạng thái</th>
+                <th scope="col" class="text-end pe-4" style="width: 10%">Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="postsTableBody">
+              <tr><td colspan="7" class="text-center py-5 text-muted"><div class="spinner-border text-primary spinner-border-sm"></div> Đang tải...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="assets/js/api.js"></script>
+
+  <script>
+    const adminInfo = JSON.parse(localStorage.getItem("admin") || "{}");
+    if (document.getElementById("welcomeName") && adminInfo.name) {
+        document.getElementById("welcomeName").innerText = "Xin chào, " + adminInfo.name;
+    }
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          Swal.fire({
+            title: 'Đăng xuất?', text: "Bạn có chắc muốn thoát?", icon: 'question', showCancelButton: true, confirmButtonText: 'Đăng xuất', cancelButtonText: 'Hủy'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                if (window.api && window.api.authAPI) window.api.authAPI.logoutAdmin();
+                else { localStorage.removeItem("adminToken"); localStorage.removeItem("admin"); }
+                window.location.href = "loginAdmin.html";
+            }
+          });
+        });
+    }
+  </script>
+
+  <script src="assets/js/admin-posts.js"></script>
+
+</body>
+</html>

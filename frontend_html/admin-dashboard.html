@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản trị - Sách Cũ Theo Khu Vực</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/styleadmin.css" />
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="logo-area">
+        <img
+          src="assets/images/logo.png"
+          alt="Logo"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+        />
+        <span>ADMIN PANEL</span>
+      </div>
+
+      <nav>
+        <a href="#" class="nav-link active">
+          <i class="bi bi-grid-fill"></i> Tổng quan
+        </a>
+        <a href="admin-users.html" class="nav-link">
+          <i class="bi bi-people-fill"></i> Quản lý người dùng
+        </a>
+        <a href="admin-posts.html" class="nav-link">
+          <i class="bi bi-file-earmark-text-fill"></i> Duyệt bài đăng
+        </a>
+        <a href="admin-categories.html" class="nav-link">
+          <i class="bi bi-tags-fill"></i> Quản lý thể loại
+        </a>
+      </nav>
+
+      <div class="search-box">
+        <div
+          class="mb-2 text-uppercase text-secondary"
+          style="font-size: 11px; font-weight: bold"
+        >
+          Tìm nhanh
+        </div>
+        <input type="text" placeholder="Tìm theo tên, email..." />
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="top-header">
+        <div class="header-title">
+          Quản trị - <span>Sách Cũ Theo Khu Vực</span>
+        </div>
+        <div class="d-flex gap-3 align-items-center">
+          <button id="logoutBtn" class="btn btn-sm btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+          </button>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-label">Người dùng</div>
+            <div class="stat-value" id="countUser">...</div>
+            <div class="stat-desc">Tổng tài khoản</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-label">Bài đăng</div>
+            <div class="stat-value" id="countPost">...</div>
+            <div class="stat-desc">Tổng bài đăng</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div class="stat-label">Chờ duyệt</div>
+            <div class="stat-value highlight-warning" id="countPending">
+              ...
+            </div>
+            <div class="stat-desc">Cần xử lý</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+      // ==========================================
+      // 1. KIỂM TRA QUYỀN ADMIN
+      // ==========================================
+      const adminToken = localStorage.getItem("adminToken");
+      const adminInfo = JSON.parse(localStorage.getItem("admin") || "{}");
+
+      if (!adminToken || !adminInfo || adminInfo.role !== "ADMIN") {
+        alert("Phiên đăng nhập hết hạn hoặc không có quyền truy cập!");
+        window.location.href = "loginAdmin.html";
+      } else {
+        const welcomeEl = document.getElementById("welcomeName");
+        if (welcomeEl)
+          welcomeEl.innerText = "Xin chào, " + (adminInfo.name || "Admin");
+      }
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          if (window.api && window.api.authAPI) {
+            window.api.authAPI.logoutAdmin();
+          } else {
+            localStorage.removeItem("adminToken");
+            localStorage.removeItem("admin");
+          }
+          window.location.href = "loginAdmin.html";
+        });
+      }
+
+      // ==========================================
+      // 2. LOGIC DASHBOARD
+      // ==========================================
+
+      document.addEventListener("DOMContentLoaded", loadData);
+
+      async function loadData() {
+        try {
+          if (!window.api || !window.api.adminAPI) {
+            console.error("Không tìm thấy file api.js");
+            return;
+          }
+
+          const [users, posts] = await Promise.all([
+            window.api.adminAPI.listUsers(),
+            window.api.adminAPI.getAllPosts(),
+          ]);
+
+          // --- A. CẬP NHẬT THỐNG KÊ CƠ BẢN ---
+          if (users)
+            document.getElementById("countUser").textContent =
+              users.length.toLocaleString();
+          if (posts)
+            document.getElementById("countPost").textContent =
+              posts.length.toLocaleString();
+
+          const pendingCount = posts
+            ? posts.filter((p) => {
+                const s = (p.status || p.postStatus || "").toUpperCase();
+                return s === "PENDING";
+              }).length
+            : 0;
+          document.getElementById("countPending").textContent = pendingCount;
+        } catch (error) {
+          console.error("Lỗi Dashboard:", error);
+        }
+      }
+
+      function renderTopCategory(posts) {
+        const catCounts = {};
+        let totalCategorized = 0;
+        posts.forEach((p) => {
+          let catName = "Khác";
+          if (p.categoryName) catName = p.categoryName;
+          else if (p.category && p.category.name) catName = p.category.name;
+          else if (p.book && p.book.category) catName = p.book.category;
+          else if (typeof p.category === "string") catName = p.category;
+
+          if (catCounts[catName]) catCounts[catName]++;
+          else catCounts[catName] = 1;
+          totalCategorized++;
+        });
+        const sortedCats = Object.entries(catCounts).sort(
+          (a, b) => b[1] - a[1]
+        );
+        if (sortedCats.length > 0) {
+          const topName = sortedCats[0][0];
+          const topCount = sortedCats[0][1];
+          const percent =
+            totalCategorized > 0
+              ? Math.round((topCount / totalCategorized) * 100)
+              : 0;
+          document.getElementById("topCatName").innerText = topName;
+          document.getElementById("topCatPercent").innerText = `${percent}%`;
+          document.getElementById("topCatBar").style.width = `${percent}%`;
+        } else {
+          document.getElementById("topCatName").innerText = "Chưa có dữ liệu";
+        }
+      }
+    </script>
+  </body>
+</html>

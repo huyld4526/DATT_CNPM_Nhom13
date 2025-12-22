@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng bán sách - Sách Cũ Theo Khu Vực</title>
+    <link rel="icon" href="assets/images/logo.png" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/images/logo.png" alt="Logo" />
+          Sách Cũ Theo Khu Vực
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html"> <i class="bi bi-house-door me-1"></i>Trang chủ </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="search-books.html"> <i class="bi bi-search me-1"></i>Tìm sách </a>
+            </li>
+            <ul class="navbar-nav" id="authLinks"></ul>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- FORM -->
+    <section class="container py-5">
+      <h2 class="section-title mb-4">📝 Đăng bán sách của bạn</h2>
+
+      <form id="postBookForm">
+        <div class="row g-4">
+          <!-- IMAGE -->
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+              <img
+                id="imagePreview"
+                src="https://placehold.co/400x500?text=Book+Cover"
+                class="card-img-top"
+                style="height: 600px; object-fit: cover"
+              />
+              <div class="card-body">
+                <label class="form-label fw-semibold">Ảnh bìa sách *</label>
+                <input type="file" id="bookImage" class="form-control" accept="image/*" required />
+                <small class="text-muted">Ảnh sẽ được upload trước khi đăng bài</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- INFO -->
+          <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Tên sách *</label>
+                <input id="title" class="form-control" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Tác giả *</label>
+                <input id="author" class="form-control" required />
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Tình trạng</label>
+                  <select id="bookCondition" class="form-select">
+                    <option value="Mới">Mới</option>
+                    <option value="Cũ nhẹ (90%)" selected>Cũ nhẹ (90%)</option>
+                    <option value="Cũ (70%)">Cũ (70%)</option>
+                    <option value="Rách nhẹ">Rách nhẹ</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Giá bán *</label>
+                  <input id="price" type="number" class="form-control" min="1000" step="1000" required />
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Thể loại *</label>
+                <select id="category" class="form-select" required>
+                  <option value="">-- Chọn thể loại --</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Tỉnh/Thành</label>
+                  <select id="province" class="form-select">
+                    <option value="">-- Chọn Tỉnh/Thành phố --</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Quận/Huyện</label>
+                  <select id="district" class="form-select">
+                    <option value="">-- Chọn Quận/Huyện --</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Thông tin liên hệ</label>
+                <input id="contactInfo" class="form-control" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Mô tả *</label>
+                <textarea id="description" rows="4" class="form-control" required></textarea>
+              </div>
+
+              <div class="text-end mt-4">
+                <button type="button" class="btn btn-outline-secondary" onclick="history.back()">Hủy</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                  <i class="bi bi-upload me-2"></i>Đăng bài
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p class="mb-0">© 2025 - Nhóm 13 | Sách Cũ Theo Khu Vực</p>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/post-book.js"></script>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Sách Cũ Theo Khu Vực</title>
+    <link rel="icon" href="assets/images/logo.png" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/images/logo.png" alt="Logo" />
+          Sách Cũ Theo Khu Vực
+        </a>
+      </div>
+    </nav>
+
+    <!-- LOGIN FORM -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <div class="card-body">
+                <div class="text-center mb-4">
+                  <h2 class="section-title">🔑 Đăng nhập</h2>
+                  <p class="text-muted">Chào mừng bạn trở lại!</p>
+                </div>
+
+                <div
+                  id="errorAlert"
+                  class="alert alert-danger d-none"
+                  role="alert"
+                ></div>
+
+                <form id="loginForm">
+                  <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold"
+                      >Email</label
+                    >
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="Nhập email của bạn"
+                      required
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold"
+                      >Mật khẩu</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      placeholder="Nhập mật khẩu"
+                      required
+                    />
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-3"
+                  >
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="rememberMe"
+                      />
+                      <label class="form-check-label" for="rememberMe"
+                        >Ghi nhớ đăng nhập</label
+                      >
+                    </div>
+                    <a href="#" class="text-decoration-none">Quên mật khẩu?</a>
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                    id="loginBtn"
+                  >
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Đăng nhập
+                  </button>
+                </form>
+
+                <!-- ✅ PHẦN ĐƯỢC THÊM VÀO: LINK ADMIN -->
+                <div class="text-center mt-4">
+                  <p class="mb-2">
+                    Chưa có tài khoản?
+                    <a href="register.html" class="fw-bold">Đăng ký ngay</a>
+                  </p>
+
+                  <a
+                    href="./loginAdmin.html"
+                    class="btn btn-outline-danger btn-sm mt-2"
+                  >
+                    🔐 Đăng nhập bằng Admin
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p class="mb-0">© 2025 - Nhóm 13 | Sách Cũ Theo Khu Vực</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/login.js"></script>
+  </body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký - Sách Cũ Theo Khu Vực</title>
+    <link rel="icon" href="assets/images/logo.png" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/images/logo.png" alt="Logo" />
+          Sách Cũ Theo Khu Vực
+        </a>
+      </div>
+    </nav>
+
+    <!-- REGISTER FORM -->
+    <section class="py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+              <div class="card-body">
+                <div class="text-center mb-4">
+                  <h2 class="section-title">🖋️ Đăng ký tài khoản</h2>
+                  <p class="text-muted">
+                    Tạo tài khoản để bắt đầu mua bán sách
+                  </p>
+                </div>
+
+                <div
+                  id="errorAlert"
+                  class="alert alert-danger d-none"
+                  role="alert"
+                ></div>
+
+                <form id="registerForm">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold"
+                          >Họ và tên *</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="name"
+                          name="name"
+                          placeholder="Nhập họ tên của bạn"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold"
+                          >Email *</label
+                        >
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="email"
+                          name="email"
+                          placeholder="Nhập email"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold"
+                          >Mật khẩu *</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="password"
+                          name="password"
+                          placeholder="Tạo mật khẩu"
+                          required
+                          minlength="6"
+                        />
+                        <small class="text-muted">Tối thiểu 6 ký tự</small>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label
+                          for="confirmPassword"
+                          class="form-label fw-semibold"
+                          >Xác nhận mật khẩu *</label
+                        >
+                        <input
+                          type="password"
+                          class="form-control"
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          placeholder="Nhập lại mật khẩu"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="phone" class="form-label fw-semibold"
+                      >Số điện thoại</label
+                    >
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phone"
+                      name="phone"
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label for="province" class="form-label fw-semibold"
+                          >Tỉnh/Thành</label
+                        >
+                        <select
+                          class="form-select"
+                          id="province"
+                          name="province"
+                        >
+                          <option value="">-- Chọn Tỉnh --</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label for="district" class="form-label fw-semibold"
+                          >Quận/Huyện</label
+                        >
+                        <select
+                          class="form-select"
+                          id="district"
+                          name="district"
+                        >
+                          <option value="">-- Chọn Quận/Huyện --</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="mb-3">
+                        <label for="ward" class="form-label fw-semibold"
+                          >Phường/Xã</label
+                        >
+                        <select class="form-select" id="ward" name="ward">
+                          <option value="">-- Chọn Phường/Xã --</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100 mt-3"
+                    id="registerBtn"
+                  >
+                    <i class="bi bi-person-plus me-2"></i>Đăng ký
+                  </button>
+                </form>
+
+                <div class="text-center mt-4">
+                  <p class="mb-0">
+                    Đã có tài khoản?
+                    <a href="login.html" class="fw-bold">Đăng nhập</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p class="mb-0">© 2025 - Nhóm 13 | Sách Cũ Theo Khu Vực</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+      // Redirect nếu đã đăng nhập
+      redirectIfAuthenticated();
+
+      // ============================
+      // Load Province - District - Ward
+      // ============================
+      const province = document.getElementById("province");
+      const district = document.getElementById("district");
+      const ward = document.getElementById("ward");
+
+      // Load danh sách tỉnh
+      fetch("https://provinces.open-api.vn/api/p/")
+        .then((res) => res.json())
+        .then((data) => {
+          data.forEach((p) => {
+            province.innerHTML += `<option value="${p.code}">${p.name}</option>`;
+          });
+        });
+
+      // Khi chọn tỉnh → load huyện
+      province.addEventListener("change", async function () {
+        district.innerHTML = "<option value=''>-- Chọn Quận/Huyện --</option>";
+        ward.innerHTML = "<option value=''>-- Chọn Phường/Xã --</option>";
+
+        const res = await fetch(
+          `https://provinces.open-api.vn/api/p/${this.value}?depth=2`
+        );
+        const data = await res.json();
+
+        data.districts.forEach((d) => {
+          district.innerHTML += `<option value="${d.code}">${d.name}</option>`;
+        });
+      });
+
+      // Khi chọn huyện → load xã
+      district.addEventListener("change", async function () {
+        ward.innerHTML = "<option value=''>-- Chọn Phường/Xã --</option>";
+
+        const res = await fetch(
+          `https://provinces.open-api.vn/api/d/${this.value}?depth=2`
+        );
+        const data = await res.json();
+
+        data.wards.forEach((w) => {
+          ward.innerHTML += `<option value="${w.code}">${w.name}</option>`;
+        });
+      });
+
+      // ============================
+      // Xử lý form đăng ký
+      // ============================
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            confirmPassword: document.getElementById("confirmPassword").value,
+            phone: document.getElementById("phone").value,
+            province: province.value,
+            district: district.value,
+            ward: ward.value,
+          };
+
+          const errorAlert = document.getElementById("errorAlert");
+          const registerBtn = document.getElementById("registerBtn");
+
+          // Validate
+          if (!formData.name.trim()) {
+            errorAlert.textContent = "Vui lòng nhập họ tên";
+            errorAlert.classList.remove("d-none");
+            return;
+          }
+
+          if (!isValidEmail(formData.email)) {
+            errorAlert.textContent = "Email không hợp lệ";
+            errorAlert.classList.remove("d-none");
+            return;
+          }
+
+          if (formData.password.length < 6) {
+            errorAlert.textContent = "Mật khẩu phải có ít nhất 6 ký tự";
+            errorAlert.classList.remove("d-none");
+            return;
+          }
+
+          if (formData.password !== formData.confirmPassword) {
+            errorAlert.textContent = "Mật khẩu xác nhận không khớp";
+            errorAlert.classList.remove("d-none");
+            return;
+          }
+
+          if (!formData.province || !formData.district || !formData.ward) {
+            errorAlert.textContent =
+              "Vui lòng chọn đầy đủ Tỉnh/Quận/Huyện/Phường";
+            errorAlert.classList.remove("d-none");
+            return;
+          }
+
+          // Disable button
+          registerBtn.disabled = true;
+          registerBtn.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2"></span>Đang đăng ký...';
+
+          // Ẩn lỗi cũ
+          errorAlert.classList.add("d-none");
+
+          try {
+            // Loại bỏ confirmPassword
+            delete formData.confirmPassword;
+
+            await authAPI.register(formData);
+
+            showToast("Đăng ký thành công! Vui lòng đăng nhập.", "success");
+
+            // Redirect về trang login
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 1500);
+          } catch (error) {
+            errorAlert.textContent =
+              error.message || "Đăng ký thất bại. Vui lòng thử lại!";
+            errorAlert.classList.remove("d-none");
+
+            // Enable button
+            registerBtn.disabled = false;
+            registerBtn.innerHTML =
+              '<i class="bi bi-person-plus me-2"></i>Đăng ký';
+          }
+        });
+    </script>
+  </body>
+</html>

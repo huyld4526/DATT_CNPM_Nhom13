@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý danh mục - Admin</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styleadmin.css" />
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo-area">
+      <img src="assets/images/logo.png" alt="Logo"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
+      <span>ADMIN PANEL</span>
+    </div>
+
+    <nav>
+      <a href="admin-dashboard.html" class="nav-link"> <i class="bi bi-grid-fill"></i> Tổng quan </a>
+      <a href="admin-users.html" class="nav-link"> <i class="bi bi-people-fill"></i> Quản lý người dùng </a>
+      <a href="admin-posts.html" class="nav-link"> <i class="bi bi-file-earmark-text-fill"></i> Duyệt bài đăng </a>
+      <a href="#" class="nav-link active"> <i class="bi bi-tags-fill"></i> Quản lý thể loại </a>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <div class="top-header mb-4">
+      <div class="header-title">
+        Quản trị - <span class="text-black fw-bold">Quản lý thể loại</span>
+      </div>
+      <div class="d-flex gap-3 align-items-center">
+        <span id="welcomeName" class="d-none d-md-block text-secondary small fw-bold">Xin chào, Admin</span>
+        <button id="logoutBtn" class="btn btn-sm btn-outline-danger">
+          <i class="bi bi-box-arrow-right"></i> Đăng xuất
+        </button>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-header bg-white border-bottom py-3">
+        <h6 class="m-0 fw-bold text-dark" id="formTitle">
+          <i class="bi bi-plus-circle me-2 text-primary"></i>Thêm Danh Mục Mới
+        </h6>
+      </div>
+      <div class="card-body p-4">
+        <form id="categoryForm" class="row g-3 align-items-center">
+          <input type="hidden" id="categoryID" />
+
+          <div class="col-md-9">
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0"><i class="bi bi-tag"></i></span>
+              <input type="text" class="form-control form-control-lg border-start-0" id="categoryName"
+                placeholder="Nhập tên danh mục (Ví dụ: Kinh tế, Văn học...)" required />
+            </div>
+          </div>
+
+          <div class="col-md-3 d-flex gap-2">
+            <button type="submit" id="btnSubmit" class="btn btn-primary btn-lg w-100 fw-bold">
+              <i class="bi bi-save me-1"></i> Lưu
+            </button>
+            <button type="button" id="btnCancel" class="btn btn-light btn-lg border text-secondary" style="width: 60px">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 fw-bold text-dark">
+          <i class="bi bi-list-ul me-2 text-primary"></i>Danh sách hiện có
+        </h6>
+        <div style="width: 200px">
+          <input type="text" class="form-control form-control-sm" placeholder="Tìm nhanh..." />
+        </div>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col" class="ps-4" style="width: 100px">ID</th>
+                <th scope="col">Tên danh mục</th>
+                <th scope="col" class="text-center" style="width: 200px">
+                  Hành động
+                </th>
+              </tr>
+            </thead>
+            <tbody id="categoryTable">
+              <tr>
+                <td colspan="3" class="text-center py-4 text-muted">
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="assets/js/api.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const adminInfo = JSON.parse(localStorage.getItem("admin") || "{}");
+    if (document.getElementById("welcomeName") && adminInfo.name) {
+      document.getElementById("welcomeName").innerText = "Xin chào, " + adminInfo.name;
+    }
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        Swal.fire({
+          title: 'Đăng xuất?',
+          text: "Bạn có muốn thoát phiên làm việc?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'Đăng xuất',
+          cancelButtonText: 'Hủy'
+        }).then((result) => {
+          if (result.isConfirmed) {
+             if(window.api && window.api.authAPI) window.api.authAPI.logoutAdmin();
+             else { localStorage.removeItem("adminToken"); localStorage.removeItem("admin"); }
+             window.location.href = "loginAdmin.html";
+          }
+        });
+      });
+    }
+  </script>
+
+  <script src="assets/js/admin-categories.js"></script>
+</body>
+</html>
