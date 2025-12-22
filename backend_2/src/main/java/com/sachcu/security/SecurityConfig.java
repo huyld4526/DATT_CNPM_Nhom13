@@ -25,13 +25,13 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(sess ->
-                sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
             .authorizeHttpRequests(auth -> auth
 
-                // ===== PUBLIC APIs (KHÔNG CẦN LOGIN) =====
+                // ===== PUBLIC =====
                 .requestMatchers(
                         "/",
                         "/api/auth/**",
@@ -40,24 +40,16 @@ public class SecurityConfig {
                         "/api/images/**"
                 ).permitAll()
 
-                // ===== USER APIs =====
-                .requestMatchers(
-                        "/api/posts/**",
-                        "/api/my-posts/**",
-                        "/api/users/**"
-                ).hasRole("USER")
-
-                // ===== ADMIN APIs =====
+                // ===== ADMIN =====
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                // ===== CÒN LẠI PHẢI LOGIN =====
-                .anyRequest().authenticated()
+                // ===== USER =====
+                .requestMatchers("/api/**").authenticated()
             )
 
-            // JWT FILTER
             .addFilterBefore(
-                    jwtAuthenticationFilter,
-                    UsernamePasswordAuthenticationFilter.class
+                jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class
             );
 
         return http.build();
@@ -70,7 +62,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) throws Exception {
+            AuthenticationConfiguration config
+    ) throws Exception {
         return config.getAuthenticationManager();
     }
 }

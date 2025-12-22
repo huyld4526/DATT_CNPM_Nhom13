@@ -23,10 +23,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
-    // ⭐⭐⭐ RẤT QUAN TRỌNG: BYPASS PUBLIC API ⭐⭐⭐
+    // ✅ BỎ QUA JWT CHO PUBLIC API
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
+        String path = request.getRequestURI();
 
         return path.equals("/")
             || path.startsWith("/api/auth")
@@ -36,10 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
 
@@ -49,8 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String token = authHeader.substring(7);
                 String email = jwtUtil.extractEmail(token);
 
-                if (email != null
-                        && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (email != null &&
+                        SecurityContextHolder.getContext().getAuthentication() == null) {
 
                     UserDetails userDetails =
                             userDetailsService.loadUserByUsername(email);
@@ -74,9 +75,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
-
         } catch (Exception e) {
-            log.error("JWT Authentication error: {}", e.getMessage());
+            log.error("JWT error: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);
