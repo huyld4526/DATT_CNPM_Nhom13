@@ -1,7 +1,5 @@
-package com.sachcu.config;
+package com.sachcu.security;
 
-import com.sachcu.security.JwtUtil;
-import com.sachcu.security.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 @Slf4j
@@ -23,6 +22,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+
+    // ⭐⭐⭐ RẤT QUAN TRỌNG: BYPASS PUBLIC API ⭐⭐⭐
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        return path.equals("/")
+            || path.startsWith("/api/auth")
+            || path.startsWith("/api/books")
+            || path.startsWith("/api/categories")
+            || path.startsWith("/api/images");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -34,15 +45,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String token = authHeader.substring(7);
 
+                String token = authHeader.substring(7);
                 String email = jwtUtil.extractEmail(token);
 
-                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (email != null
+                        && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                    UserDetails userDetails =
+                            userDetailsService.loadUserByUsername(email);
 
                     if (jwtUtil.validateToken(token, userDetails)) {
+
                         UsernamePasswordAuthenticationToken authentication =
                                 new UsernamePasswordAuthenticationToken(
                                         userDetails,
@@ -51,10 +65,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 );
 
                         authentication.setDetails(
-                                new WebAuthenticationDetailsSource().buildDetails(request)
+                                new WebAuthenticationDetailsSource()
+                                        .buildDetails(request)
                         );
 
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        SecurityContextHolder.getContext()
+                                .setAuthentication(authentication);
                     }
                 }
             }
