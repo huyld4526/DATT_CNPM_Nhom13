@@ -26,9 +26,20 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/public/**").permitAll()
-                .anyRequest().authenticated()
+
+                // ===== PUBLIC API (KHÔNG CẦN LOGIN) =====
+                .requestMatchers(
+                    "/api/auth/**",
+                    "/api/books/**",
+                    "/api/categories/**",
+                    "/api/images/**"
+                ).permitAll()
+
+                // ===== ADMIN API =====
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // ===== USER API =====
+                .requestMatchers("/api/**").authenticated()
             );
 
         return http.build();
