@@ -31,27 +31,33 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
 
-                // ===== PUBLIC =====
+                // ===================== PUBLIC APIs =====================
                 .requestMatchers(
                         "/",
-                        "/api/auth/**",
-                        "/api/books/**",
-                        "/api/categories/**",
-                        "/api/images/**"
+                        "/api/auth/**",              // register, login, admin login
+                        "/api/books/**",             // books, search, province
+                        "/api/categories/**",        // get all categories
+                        "/api/posts/*",              // xem chi tiết bài đăng (public)
+                        "/api/images/**",            // xem ảnh
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**"
                 ).permitAll()
 
-                // ===== ADMIN =====
-                .requestMatchers("/api/admin/**")
-                    .hasAuthority("ADMIN")
-
-                // ===== USER =====
+                // ===================== USER APIs =====================
                 .requestMatchers(
-                        "/api/posts/**",
-                        "/api/my-posts/**",
-                        "/api/users/**"
-                ).hasAuthority("USER")
+                        "/api/posts",                        // đăng bài
+                        "/api/my-posts/**",                  // xem/sửa/xóa bài của tôi
+                        "/api/users/**",                     // thông tin user
+                        "/api/images/upload",                // upload ảnh
+                        "/api/images/upload-multiple"
+                ).hasRole("USER")
 
-                // ===== CÒN LẠI =====
+                // ===================== ADMIN APIs =====================
+                .requestMatchers(
+                        "/api/admin/**"                      // tất cả API admin
+                ).hasRole("ADMIN")
+
+                // ===================== OTHER =====================
                 .anyRequest().authenticated()
             )
 
