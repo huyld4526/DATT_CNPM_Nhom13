@@ -34,27 +34,27 @@ public class SecurityConfig {
                 // ===================== PUBLIC APIs =====================
                 .requestMatchers(
                         "/",
-                        "/api/auth/**",              // register, login, admin login
-                        "/api/books/**",             // books, search, province
-                        "/api/categories/**",        // get all categories
-                        "/api/posts/*",              // xem chi tiết bài đăng (public)
-                        "/api/images/**",            // xem ảnh
+                        "/auth/**",              // register, login, admin login
+                        "/books/**",             // books, search, province
+                        "/categories/**",        // get all categories
+                        "/posts/*",              // xem chi tiết bài đăng (public)
+                        "/images/**",            // xem ảnh
                         "/swagger-ui/**",
                         "/v3/api-docs/**"
                 ).permitAll()
 
                 // ===================== USER APIs =====================
                 .requestMatchers(
-                        "/api/posts",                        // đăng bài
-                        "/api/my-posts/**",                  // xem/sửa/xóa bài của tôi
-                        "/api/users/**",                     // thông tin user
-                        "/api/images/upload",                // upload ảnh
-                        "/api/images/upload-multiple"
+                        "/posts",                        // đăng bài
+                        "/my-posts/**",                  // xem/sửa/xóa bài của tôi
+                        "/users/**",                     // thông tin user
+                        "/images/upload",                // upload ảnh
+                        "/images/upload-multiple"
                 ).hasRole("USER")
 
                 // ===================== ADMIN APIs =====================
                 .requestMatchers(
-                        "/api/admin/**"                      // tất cả API admin
+                        "/admin/**"                      // tất cả API admin
                 ).hasRole("ADMIN")
 
                 // ===================== OTHER =====================
