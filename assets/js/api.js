@@ -4,7 +4,6 @@
 
 const API_BASE_URL = "https://sachcu.up.railway.app/api";
 
-
 // ===== TOKEN =====
 function getAuthToken() {
   return localStorage.getItem("userToken");
@@ -54,16 +53,17 @@ async function handleResponse(response) {
   }
 
   if (!response.ok) {
-    const json = await response.json().catch(() => ({}));
-    const message = json.message || json.error || "Request failed";
-    const err = new Error(message);
-    err.status = response.status;
-    err.payload = json;
-    throw err;
+    const text = await response.text();
+    throw new Error(text || "Request failed");
   }
 
-  const text = await response.text();
-  return text ? JSON.parse(text) : null;
+  const contentType = response.headers.get("content-type");
+
+  if (contentType && contentType.includes("application/json")) {
+    return await response.json(); //  JSON thì parse JSON
+  }
+
+  return await response.text(); // TEXT thì trả TEXT
 }
 
 // =============================================================
@@ -345,7 +345,9 @@ const adminAPI = {
     try {
       return await res.json();
     } catch (err) {
-      console.warn("Backend trả về HTML nhưng status OK -> Coi như thành công.");
+      console.warn(
+        "Backend trả về HTML nhưng status OK -> Coi như thành công."
+      );
       return { success: true };
     }
   },
